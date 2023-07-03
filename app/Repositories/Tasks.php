@@ -36,6 +36,7 @@ class Tasks extends Repository
                 'name' => $data['name'],
                 'priority' => $data['priority'],
                 'date' => $data['date'],
+                'project_id' =>$data['project_id'],
                 'user_id' => $data['user_id']
             ]);
 
