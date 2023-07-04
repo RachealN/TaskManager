@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Repositories\Tasks;
+use App\Models\Task;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -18,16 +20,20 @@ class TaskController extends Controller
 
     public function index()
     {
-        $tasksFetch =
-            $this
-                ->tasksRepository
-                ->all();
+        $tasks = $this->tasksRepository->all();
 
-        if ($tasksFetch->hasError()) {
-            return response()->json($tasksFetch->getItems(), 500);
+        if ($tasks->hasError()) {
+            return response()->json($tasks->getItems(), 500);
         }
 
-        return response()->json($tasksFetch->getItems(), 200);
+        return response()->json($tasks->getItems(), 200);
+    }
+
+    public function indexByProject($id)
+    {
+        $project = Project::findOrFail($id);
+        $tasks = $project->tasks()->orderBy('priority')->get();
+        return response()->json($tasks);
     }
 
     public function store(Request $request)

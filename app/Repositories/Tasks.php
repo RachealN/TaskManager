@@ -2,7 +2,7 @@
 
 namespace App\Repositories;
 
-// use App\Task;
+use App\Models\Project;
 use App\Models\Task;
 use App\Http\Resources\Task as TaskResource;
 use Illuminate\Support\Facades\Log;
@@ -12,7 +12,7 @@ class Tasks extends Repository
     public function all(): Repository
     {
         try {
-            $tasks = Task::all();
+            $tasks = Task::orderBy('priority')->get();
             $tasksList = TaskResource::collection($tasks);
         } catch (\Exception $e) {
             Log::error(
